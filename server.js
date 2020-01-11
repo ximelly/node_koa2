@@ -41,6 +41,17 @@ let server = new Koa();
             ctx.body = "internet error";
         }
     })
+
+    router.post("/api",
+        convert(body({
+            multipart: false,
+            buffer: false
+        })),
+        async ctx => {
+            ctx.body = ctx.request.fields;
+        }
+    );
+
     router.post("/upload",
         async (ctx, next) => {
             try {
@@ -55,7 +66,7 @@ let server = new Koa();
         },
         convert(body({
             uploadDir: "./upload",
-            maxFileSize: 10
+            maxFileSize: 1024*1024
         })),
         async ctx => {
             ctx.body = "文件上传成功";
