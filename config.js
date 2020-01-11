@@ -1,6 +1,6 @@
 module.exports={
     //服务器
-    port:8080,
+    port:8081,
 
     //数据库
     db_host:"localhost",
