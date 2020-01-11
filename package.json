@@ -27,6 +27,7 @@
     "koa-session": "^5.12.3",
     "koa-static": "^5.0.0",
     "memorystream": "^0.3.1",
+    "open": "^7.0.0",
     "promise-fs": "^2.1.1",
     "promise-mysql": "^4.1.1",
     "redis": "^2.8.0",

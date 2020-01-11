@@ -1,5 +1,6 @@
 const Koa=require("koa");
 const config=require("./config");
+const opn=require("open");
 
 let server=new Koa();
 
@@ -11,4 +12,5 @@ let server=new Koa();
 
     server.listen(config.port);
     console.log(`server is running at ${config.port}`);
+    opn(`http://localhost:${config.port}`)
 })()
