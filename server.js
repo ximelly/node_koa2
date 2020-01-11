@@ -1,6 +1,7 @@
 const Koa=require("koa");
 const config=require("./config");
 const opn=require("open");
+const net_msg=await require("./libs/network");
 
 let server=new Koa();
 
@@ -18,6 +19,13 @@ let server=new Koa();
     // })
 
     server.listen(config.port);
-    console.log(`server is running at ${config.port}`);
+
+    net_msg.forEach(item=>{
+        if(config.port=="80"){
+            console.log(`server is running at http://${item.address}${config.port=="80"?'':':'+config.port}`);
+        }else{
+            console.log(`server is running at http://${item.address}:${config.port}`);
+        }
+    });
     opn(`http://localhost:${config.port}`)
 })()
