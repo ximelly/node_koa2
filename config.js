@@ -9,4 +9,9 @@ module.exports={
     db_pass:"123456",
     db_name:"first_db",
     db_table:"user_table",
+
+    //redis
+    redis_host:"localhost",
+    redis_port:"6379",
+    redis_pass:"",
 }
