@@ -16,7 +16,7 @@ let server = new Koa();
     // server.context.redis=await require("./libs/redis");
     // server.use(async ctx=>{
     //    await ctx.redis.setAsync("name","ximelly");
-    //    ctx.body=await ctx.redis.getAsync("name","ximelly");
+    //    ctx.body=await ctx.redis.getAsync("name");
     // })
 
 
