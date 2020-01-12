@@ -44,14 +44,21 @@ let server = new Koa();
     router.post("/api",
         body.post(),
         async ctx => {
-            console.log(ctx.request);
             ctx.body = ctx.request.fields;
         }
     );
 
     router.post("/upload",
-        ...body.upload(),
-        async ctx => {
+        ...body.upload({
+            maxFileSize:10*1024,
+            fileExceed:async(ctx)=>{
+                ctx.body = "老铁，文件太大了喔";
+            },
+            error:async(ctx,e)=>{
+                ctx.body = `老铁，出错了喔,${e.message}`;
+            }
+        }),
+        ctx => {
             ctx.body = "文件上传成功";
         }
     );
