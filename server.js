@@ -1,9 +1,8 @@
 const Koa = require("koa");
 const config = require("./config");
 const opn = require("open");
-const body = require("koa-better-body");
-const convert = require("koa-convert");
 const Router = require("koa-router");
+const body=require("./libs/body")
 
 let server = new Koa();
 
@@ -43,31 +42,15 @@ let server = new Koa();
     })
 
     router.post("/api",
-        convert(body({
-            multipart: false,
-            buffer: false
-        })),
+        body.post(),
         async ctx => {
+            console.log(ctx.request);
             ctx.body = ctx.request.fields;
         }
     );
 
     router.post("/upload",
-        async (ctx, next) => {
-            try {
-                await next();
-            } catch (e) {
-                if (e.message.startsWith("maxFileSize exceeded")) {
-                    ctx.body = "文件过大";
-                } else {
-                    throw e;
-                }
-            }
-        },
-        convert(body({
-            uploadDir: "./upload",
-            maxFileSize: 1024*1024
-        })),
+        ...body.upload(),
         async ctx => {
             ctx.body = "文件上传成功";
         }
