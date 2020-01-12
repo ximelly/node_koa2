@@ -18,5 +18,13 @@ module.exports={
     redis_pass:undefined,
 
     //upload 注：此处的路径使用绝对路径
-    uploadDir:path.resolve(__dirname,"upload")
+    uploadDir:path.resolve(__dirname,"upload"),
+
+    //session
+    session_maxage:86400*1000,
+
+    //key
+    key_count:1024,
+    key_len:1024,
+    key_path:path.resolve(__dirname,".key"),//.key：文件名前面加点不会显示出来
 }
