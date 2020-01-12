@@ -15,7 +15,7 @@ module.exports={
     //redis
     redis_host:"localhost",
     redis_port:"6379",
-    redis_pass:"",
+    redis_pass:undefined,
 
     //upload 注：此处的路径使用绝对路径
     uploadDir:path.resolve(__dirname,"upload")

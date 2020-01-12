@@ -3,7 +3,9 @@ const bluebird=require("bluebird");
 const config=require("../config");
 
 let client=redis.createClient({
-    host:config.redis_host
+    host:config.redis_host,
+    port:config.redis_port,
+    password:config.redis_pass
 })
 //promise化
 //经过bluebird的处理，get、set编程getAsync、setAsync
