@@ -1,8 +1,6 @@
 const Koa = require("koa");
 const config = require("./config");
 const opn = require("open");
-const Router = require("koa-router");
-const body=require("./libs/body");
 
 let server = new Koa();
 
@@ -21,15 +19,15 @@ let server = new Koa();
     // })
 
     //session
-    await require("./libs/session")(server);
-    server.use(async ctx=>{
-        if(ctx.session.view){
-            ctx.session.view++;
-        }else{
-            ctx.session.view=1;
-        }
-        ctx.body=`第${ctx.session.view}次访问`;
-    })
+    //await require("./libs/session")(server);
+    // server.use(async ctx=>{
+    //     if(ctx.session.view){
+    //         ctx.session.view++;
+    //     }else{
+    //         ctx.session.view=1;
+    //     }
+    //     ctx.body=`第${ctx.session.view}次访问`;
+    // })
 
     //获取系统相关信息
     const net_msg = await require("./libs/network");
@@ -41,9 +39,6 @@ let server = new Koa();
         }
     });
 
-
-    //router
-    let router = new Router();
     //全局错误处理
     server.use(async (ctx, next) => {
         try {
@@ -55,29 +50,7 @@ let server = new Koa();
         }
     })
 
-    router.post("/api",
-        body.post(),
-        async ctx => {
-            ctx.body = ctx.request.fields;
-        }
-    );
-
-    router.post("/upload",
-        ...body.upload({
-            maxFileSize:10*1024,
-            fileExceed:async(ctx)=>{
-                ctx.body = "老铁，文件太大了喔";
-            },
-            error:async(ctx,e)=>{
-                ctx.body = `老铁，出错了喔,${e.message}`;
-            }
-        }),
-        ctx => {
-            ctx.body = "文件上传成功";
-        }
-    );
-
-    server.use(router.routes());
+    server.use(require("./router"));
     server.listen(config.port);
     //opn(`http://localhost:${config.port}`)
 })()
