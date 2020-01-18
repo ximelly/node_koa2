@@ -33,5 +33,8 @@ module.exports={
 
     //errors
     error_404:path.resolve(__dirname,"errors/error_404.html"),
-    error_500:path.resolve(__dirname,"errors/error_500.html")
+    error_500:path.resolve(__dirname,"errors/error_500.html"),
+
+    //md5_key
+    md5_key:"hsdfskladfhkkkk878##$$*&%&%("
 }
