@@ -1,12 +1,13 @@
 
 const Router = require("koa-router");
 const body=require("../libs/body");
+const static = require("./static");
 
 let router = new Router();
 
 router.use("",require("./web"));
 router.use("/admin",require("./admin"));
-
+static(router);
 
 //一下两个router用于测试post请求
 router.post("/api",

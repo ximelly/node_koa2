@@ -27,4 +27,7 @@ module.exports={
     key_count:1024,
     key_len:1024,
     key_path:path.resolve(__dirname,".key"),//.key：文件名前面加点不会显示出来
+
+    //静态资源地址
+    static_path:path.resolve(__dirname,"static")
 }
