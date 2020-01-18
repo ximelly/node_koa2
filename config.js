@@ -29,5 +29,9 @@ module.exports={
     key_path:path.resolve(__dirname,".key"),//.key：文件名前面加点不会显示出来
 
     //静态资源地址
-    static_path:path.resolve(__dirname,"static")
+    static_path:path.resolve(__dirname,"static"),
+
+    //errors
+    error_404:path.resolve(__dirname,"errors/error_404.html"),
+    error_500:path.resolve(__dirname,"errors/error_500.html")
 }

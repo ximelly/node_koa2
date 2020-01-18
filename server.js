@@ -1,6 +1,7 @@
 const Koa = require("koa");
 const config = require("./config");
 const opn = require("open");
+const fs = require("promise-fs");
 
 let server = new Koa();
 
@@ -39,13 +40,33 @@ let server = new Koa();
         }
     });
 
+    let error_404="";
+    try {
+        error_404=fs.readFileSync(config.error_404);
+        error_404=error_404.toString();
+    } catch (error) {
+        console.log("404 file is not found");
+    }
+    let error_500="";
+    try {
+        error_500=fs.readFileSync(config.error_500);
+        error_500=error_500.toString();
+    } catch (error) {
+        console.log("500 file is not found");
+    }
     //全局错误处理
     server.use(async (ctx, next) => {
         try {
             await next();
+            if(ctx.status==404){
+                ctx.body=error_404||"not found";
+            }
+            if(ctx.status==500){
+                ctx.body=error_500||"Internet Server Error";
+            }
         } catch (error) {
             ctx.status = 500;
-            ctx.body = "internet error";
+            ctx.body=error_500||"Internet Server Error";
             console.log(error);
         }
     })
