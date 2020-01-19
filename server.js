@@ -9,7 +9,7 @@ let server = new Koa();
 
 (async () => {
     //mysql
-    // server.context.db=await require("./libs/mysql");
+    server.context.db=await require("./libs/mysql");
     // server.use(async ctx=>{
     //     ctx.body=await ctx.db.query(`SELECT * FROM ${config.db_table} LIMIT 10`)
     // })

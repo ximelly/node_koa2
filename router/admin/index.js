@@ -9,8 +9,7 @@ router.get("/login",async ctx=>{
 });
 router.post("/login",post(),async ctx=>{
     let {username,password}=ctx.request.fields;
-    let db=await require("../../libs/mysql");
-    let rows=await db.query(`SELECT ID,password FROM ${config.db_table_car} WHERE username=?`,[username]);
+    let rows=await ctx.db.query(`SELECT ID,password FROM ${config.db_table_car} WHERE username=?`,[username]);
     if(rows.length==0){
         await ctx.render("admin/login",{error:`${username}用户不存在`,username,password});
     }else{
