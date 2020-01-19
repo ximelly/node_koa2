@@ -7,6 +7,8 @@ let router = new Router();
 router.use(async(ctx,next)=>{
     if(!ctx.session["adminID"]&&ctx.url!=="/admin/login"){
         ctx.redirect("/admin/login");
+    }else if(ctx.session["adminID"]&&ctx.url=="/admin/login"){
+        ctx.redirect("/admin");
     }else{
         await next();
     }
