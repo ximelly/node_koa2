@@ -6,6 +6,7 @@ const readLine=require("../libs/readLine");
     let db=await require("../libs/mysql");
     while(1){
         let name=await readLine.questionAsync("请输入用户名：");
+        name=name.toLowerCase();
         if(!name){
             break;
         }
