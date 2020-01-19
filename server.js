@@ -2,6 +2,8 @@ const Koa = require("koa");
 const config = require("./config");
 const opn = require("open");
 const fs = require("promise-fs");
+const ejs = require("koa-ejs");
+const path = require("path");
 
 let server = new Koa();
 
@@ -71,7 +73,18 @@ let server = new Koa();
         }
     })
 
+    //router
     server.use(require("./router"));
+
+    //ejs 使用ejs渲染页面ctx.render
+    ejs(server,{
+        root:path.resolve(__dirname,'template'),
+        layout:false,
+        viewExt:'ejs',
+        cache:false,
+        debug:false
+    })
+
     server.listen(config.port);
     //opn(`http://localhost:${config.port}`)
 })()
