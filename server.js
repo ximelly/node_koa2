@@ -22,7 +22,7 @@ let server = new Koa();
     // })
 
     //session
-    //await require("./libs/session")(server);
+    await require("./libs/session")(server);
     // server.use(async ctx=>{
     //     if(ctx.session.view){
     //         ctx.session.view++;
