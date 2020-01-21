@@ -5,7 +5,7 @@ const {upload} = require("../../libs/body");
 module.exports=(router,name,process,message)=>{
     router.get(`/${name}`,async ctx=>{
         let datas=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} ORDER BY ID DESC`);
-        await ctx.render(`admin/${name}`,{datas,page_count:1,message,name:`${name}`});
+        await ctx.render(`admin/table`,{datas,page_count:1,message,name:`${name}`});
     });
 
     router.post(`/${name}`,...upload({

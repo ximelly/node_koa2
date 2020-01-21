@@ -24,19 +24,19 @@
         <!--内容-->
         <form action="/admin/<%=name%>" method="post" enctype="multipart/form-data">
 
-          <% for(let name in fields){%>
+          <% for(let name in message){%>
           <div class="form-group">
-            <label for="<%=name%>"><%=fields[name].title%></label>
+            <label for="<%=name%>"><%=message[name].title%></label>
             <%
-            switch(fields[name].type){
+            switch(message[name].type){
               case 'textarea':
             %>
-              <textarea id="<%=name%>" name="<%=name%>" class="form-control" rows="10" placeholder="请输入<%=fields[name].title%>"></textarea>
+              <textarea id="<%=name%>" name="<%=name%>" class="form-control" rows="10" placeholder="请输入<%=message[name].title%>"></textarea>
             <%
                 break;
               case 'fields':
             %>
-              <div class="fields" id="fields_<%=name%>">
+              <div class="message" id="message_<%=name%>">
                 <div class="row">
                   <div class="col-xs-4">
                     <input type="text" class="form-control" name="<%=name%>_key" placeholder="请输入字段名称">
@@ -46,17 +46,17 @@
                   </div>
                 </div>
               </div>
-              <button type="button" class="btn btn-default" onclick="addField('fields_<%=name%>', '<%=name%>')">添加</button>
+              <button type="button" class="btn btn-default" onclick="addField('message_<%=name%>', '<%=name%>')">添加</button>
             <%
                 break;
               case 'files':
             %>
-              <input type="file" class="form-control" id="<%=name%>" name="<%=name%>" placeholder="请输入<%=fields[name].title%>" multiple>
+              <input type="file" class="form-control" id="<%=name%>" name="<%=name%>" placeholder="请输入<%=message[name].title%>" multiple>
             <%
                 break;
               default:
             %>
-              <input type="<%=fields[name].type%>" class="form-control" id="<%=name%>" name="<%=name%>" placeholder="请输入<%=fields[name].title%>">
+              <input type="<%=message[name].type%>" class="form-control" id="<%=name%>" name="<%=name%>" placeholder="请输入<%=message[name].title%>">
             <%
                 break;
             }
@@ -64,10 +64,6 @@
 
           </div>
           <% } %>
-
-
-
-
 
           <div class="form-group">
             <button type="submit" class="btn btn-primary">添加</button>
@@ -85,13 +81,9 @@
             <input type="checkbox" name="" value="">
           </th>
           <th>ID</th>
-
-          <% for(let name in fields){%>
-            <% if(fields[name].show_in_table!==false){ %>
-              <th><%=fields[name].title%></th>
-            <% } %>
+          <% for(let name in message){%>
+            <th><%=message[name].name%></th>
           <%}%>
-
           <th>操作</th>
         </tr>
       </thead>
@@ -102,13 +94,9 @@
               <input type="checkbox" name="" value="">
             </td>
             <td><%=data.ID%></td>
-
-            <% for(let name in fields){%>
-              <% if(fields[name].show_in_table!==false){ %>
-                <td><%=data[name]%></td>
-              <% } %>
+            <% for(let name in message){%>
+              <td><%=data[name]%></td>
             <%}%>
-
             <td>
               <button type="button" class="btn btn-default">修改</button>
               <button type="button" class="btn btn-danger">删除</button>
