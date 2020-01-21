@@ -1,6 +1,7 @@
 const config = require("../../config");
 const {upload} = require("../../libs/body");
 const path = require("path");
+const reg = require("../../libs/reg");
 
 module.exports=(router)=>{
     router.get("/banner",async ctx=>{
@@ -17,7 +18,13 @@ module.exports=(router)=>{
     }),async ctx=>{
         let {title,sub_title,image}=ctx.request.fields;
         image=path.basename(image[0].path);
-        await ctx.db.query(`INSERT INTO ${config.db_table_banner} (title,sub_title,image) VALUES(?,?,?)`,[title,sub_title,image]);
-        ctx.redirect("/admin/banner");
+        if(!reg.admin.title.test(title)){
+            ctx.body="标题格式不对"
+        }else if(!reg.admin.title.test(sub_title)){
+            ctx.body="副标题格式不对"
+        }else{
+            await ctx.db.query(`INSERT INTO ${config.db_table_banner} (title,sub_title,image) VALUES(?,?,?)`,[title,sub_title,image]);
+            ctx.redirect("/admin/banner");
+        }
     });
 }
