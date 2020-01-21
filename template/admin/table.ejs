@@ -31,7 +31,7 @@
             switch(message[name].type){
               case 'textarea':
             %>
-              <textarea id="<%=name%>" name="<%=name%>" class="form-control" rows="10" placeholder="请输入<%=message[name].title%>"></textarea>
+              <textarea id="<%=name%>" name="<%=name%>" class="form-control" rows="5" placeholder="请输入<%=message[name].title%>"></textarea>
             <%
                 break;
               case 'fields':
@@ -82,7 +82,9 @@
           </th>
           <th>ID</th>
           <% for(let name in message){%>
-            <th><%=message[name].name%></th>
+            <%if(message[name].showInTable!==false){%>
+              <th><%=message[name].name%></th>
+            <%}%>
           <%}%>
           <th>操作</th>
         </tr>
@@ -95,7 +97,9 @@
             </td>
             <td><%=data.ID%></td>
             <% for(let name in message){%>
-              <td><%=data[name]%></td>
+              <%if(message[name].showInTable!==false){%>
+                <td><%=data[name]%></td>
+              <%}%>
             <%}%>
             <td>
               <button type="button" class="btn btn-default">修改</button>

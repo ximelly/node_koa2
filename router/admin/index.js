@@ -1,6 +1,5 @@
 const Router = require("koa-router");
 const reg = require("../../libs/reg");
-const path = require("path");
 
 let router = new Router();
 router.use(async(ctx,next)=>{
@@ -20,14 +19,6 @@ require("./login")(router);
 require("./banner")(
     router,
     'banner',
-    async (fields)=>{
-        if(fields.image[0].size>0){
-            fields.image=path.basename(fields.image[0].path);
-        }else{
-            delete fields.image;
-        }
-        return fields;
-    },
     {
         title:{title:"title",name:"title",type:"text",rule:reg.admin.title,msg:"标题格式不对"},
         sub_title:{title:"sub_title",name:"sub_title",type:"text",rule:reg.admin.title,msg:"副标题格式不对"},
@@ -35,11 +26,21 @@ require("./banner")(
     }
 );
 
+//引入car相关路由
+require("./banner")(
+    router,
+    'car',
+    {
+        title:{title:"title",name:"title",type:"text",rule:reg.admin.title,msg:"标题格式不对"},
+        price:{title:"price",name:"price",type:"number"},
+        images:{title:"images",name:"images",type:"files",showInTable:false},
+        features:{title:"features",name:"features",type:"fields",showInTable:false},
+        description:{title:"description",name:"description",type:"textarea"},
+    }
+);
+
 router.get("/",ctx=>{
     ctx.body="登录成功";
-});
-router.get("/car",ctx=>{
-    ctx.body="car";
 });
 
 module.exports=router.routes();

@@ -14,6 +14,7 @@ module.exports={
     db_name_car:"z_ximelly_cars",
     db_table_car:"admin_table",
     db_table_banner:"banner_table",
+    db_table_car:"car_table",
 
     //redis
     redis_host:"localhost",
