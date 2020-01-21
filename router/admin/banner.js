@@ -5,7 +5,7 @@ const reg = require("../../libs/reg");
 
 module.exports=(router)=>{
     router.get("/banner",async ctx=>{
-        let banners=await ctx.db.query(`SELECT * FROM ${config.db_table_banner} `);
+        let banners=await ctx.db.query(`SELECT * FROM ${config.db_table_banner} ORDER BY ID DESC`);
         let fields={
             title:{title:"title",name:"title",type:"text"},
             sub_title:{title:"sub_title",name:"sub_title",type:"text"},
