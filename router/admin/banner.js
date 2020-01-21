@@ -2,10 +2,29 @@ const config = require("../../config");
 const {upload} = require("../../libs/body");
 
 
-module.exports=(router,name,process,message)=>{
-    router.get(`/${name}`,async ctx=>{
-        let datas=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} ORDER BY ID DESC`);
-        await ctx.render(`admin/table`,{datas,page_count:1,message,name:`${name}`});
+module.exports=(router,name,process,message,pageSize=5)=>{
+    router.get(`/${name}`,async ctx=>{  
+        ctx.redirect(`/admin/${name}/1`);
+    });
+    router.get(`/${name}/:page`,async ctx=>{
+        //计算一共有多少页数据
+        let allCount=await ctx.db.query(`SELECT count(*) AS count FROM ${config[`db_table_${name}`]}`)
+        let count=allCount[0].count;
+        let page_count=Math.ceil(count/pageSize);
+
+        //获取当前页
+        let {page}=ctx.params;
+        page=parseInt(page);
+        if(isNaN(page)||page<1){
+            page=1;
+        }else if(page>page_count){
+            page=page_count;
+        }
+
+        let datas=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} ORDER BY ID DESC LIMIT ?,?`,[(page-1)*pageSize,pageSize]);
+
+
+        await ctx.render(`admin/table`,{name:`${name}`,datas,message,page_count,page});
     });
 
     router.post(`/${name}`,...upload({
