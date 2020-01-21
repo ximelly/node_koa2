@@ -2,26 +2,27 @@ const config = require("../../config");
 const {upload} = require("../../libs/body");
 
 
-module.exports=(router,name,process,valids)=>{
+module.exports=(router,name,process,message)=>{
     router.get(`/${name}`,async ctx=>{
-        let banners=await ctx.db.query(`SELECT * FROM ${config.db_table_banner} ORDER BY ID DESC`);
-        let fields={
-            title:{title:"title",name:"title",type:"text"},
-            sub_title:{title:"sub_title",name:"sub_title",type:"text"},
-            image:{title:"image",name:"image",type:"files"}
-        }
-        await ctx.render(`admin/${name}`,{datas:banners,page_count:1,fields,name:"banner"});
+        let datas=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} ORDER BY ID DESC`);
+        await ctx.render(`admin/${name}`,{datas,page_count:1,message,name:`${name}`});
     });
+
     router.post(`/${name}`,...upload({
         maxFileSize:5*1024*1024
     }),async ctx=>{
+        //获取到用户提交内容并进行初步处理
         let fields=await process(ctx.request.fields);
+
+        //校验用户提交内容
         let errors=[];
-        valids.forEach(({rule,name,msg})=>{
+        for(let name in message){
+            let {rule,msg}=message[name];
+            if(!rule)continue;
             if(!rule.test(fields[name])){
                 errors.push(msg);
             }
-        })
+        }
         if(errors.length>0){
             ctx.body=errors.join(",");
         }else{

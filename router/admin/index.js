@@ -28,10 +28,11 @@ require("./banner")(
         }
         return fields;
     },
-    [
-        {rule:reg.admin.title,name:"title",msg:"标题格式不对"},
-        {rule:reg.admin.title,name:"sub_title",msg:"副标题格式不对"}
-    ]
+    {
+        title:{title:"title",name:"title",type:"text",rule:reg.admin.title,msg:"标题格式不对"},
+        sub_title:{title:"sub_title",name:"sub_title",type:"text",rule:reg.admin.title,msg:"副标题格式不对"},
+        image:{title:"image",name:"image",type:"files"}
+    }
 );
 
 router.get("/",ctx=>{
