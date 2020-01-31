@@ -99,6 +99,37 @@ module.exports=(router,name,message,pageSize=5)=>{
         await ctx.render(`admin/table`,{name:`${name}`,datas,message,page_count,page});
     });
 
+    //删除数据
+    router.get(`/del${name}/:id`,async ctx=>{
+        let {id}=ctx.params;
+        //查询数据库中是否有该条数据
+        let row=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
+        if(row.length>0){
+            let data=row[0];
+            //获取所有文件数据
+            let allFiles=[];
+            for(let name in message){
+                if(message[name].type=='file'||message[name].type=='files'){
+                    allFiles=allFiles.concat(data[name].split(",")||[]);
+                }
+            }
+            await ctx.db.query(`DELETE FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
+
+            //删除所有文件
+            for(let i=0,len=allFiles.length;i<len;i++){
+                try{
+                    await fs.unlink(path.resolve(config.uploadDir,allFiles[i]));
+                }catch(e){
+                    console.log(e);
+                }
+            }
+
+        }else{
+            ctx.body="数据找不到"
+        }
+        ctx.redirect(`/admin/${name}`);
+    });
+
     //新增数据
     router.post(`/${name}`,...upload({
         maxFileSize:5*1024*1024
