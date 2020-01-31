@@ -19,7 +19,7 @@ module.exports=(router)=>{
         if(!admin.username.test(username)){
             await render("用户名格式不对，必须4-32为字母或汉字");
         }else if(!admin.password.test(password)){
-            await render("密码格式不对，必须6-32为字母或汉字");
+            await render("密码格式不对，必须3-32为字母或汉字");
         }else{
             let rows=await ctx.db.query(`SELECT ID,password FROM ${config.db_table_car} WHERE username=?`,[username]);
             if(rows.length==0){
