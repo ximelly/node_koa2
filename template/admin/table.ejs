@@ -236,6 +236,8 @@
       let oShadow=document.getElementById('shadow2');
       let oDialog=document.getElementById('dialog2');
       let form=document.getElementById('form_mod');
+
+      //修改form提交路径
       form.action=`/admin/<%=name%>/${current_data.ID}`;
 
       //显示弹窗
@@ -246,14 +248,13 @@
       for(let name in current_data){
         let el=document.getElementById(`${name}_mod`);
         if(el){
-          if(!el.name){
+          if(name=="features"){
             //获取父元素
             let parent=document.getElementById(`${name}_mod`);
             //清除父元素数据
             parent.innerHTML='';
-
             //分隔数据
-            let arr=current_data[name].split(",");
+            let arr=current_data[name]?current_data[name].split(","):[];
             arr.forEach(element => {
               let [key,value]=element.split("|");
               let row=document.createElement("div");
@@ -266,7 +267,7 @@
                 </div>`;
               parent.appendChild(row);
             });
-          }else if(el.name=="images"){
+          }else if(name=="images"){
             
           }else{
             el.value=current_data[name];
