@@ -21,7 +21,7 @@ module.exports=(router)=>{
         }else if(!admin.password.test(password)){
             await render("密码格式不对，必须3-32为字母或汉字");
         }else{
-            let rows=await ctx.db.query(`SELECT ID,password FROM ${config.db_table_car} WHERE username=?`,[username]);
+            let rows=await ctx.db.query(`SELECT ID,password FROM ${config.db_admin} WHERE username=?`,[username]);
             if(rows.length==0){
                 await render(`${username}用户不存在`);
             }else{
