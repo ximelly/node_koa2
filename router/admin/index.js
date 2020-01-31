@@ -22,7 +22,7 @@ require("./banner")(
     {
         title:{title:"title",name:"title",type:"text",rule:reg.admin.title,msg:"标题格式不对"},
         sub_title:{title:"sub_title",name:"sub_title",type:"text",rule:reg.admin.title,msg:"副标题格式不对"},
-        image:{title:"image",name:"image",type:"files"}
+        image:{title:"image",name:"image",type:"file"}
     }
 );
 

@@ -119,6 +119,16 @@ module.exports=(router,name,message,pageSize=5)=>{
     }),preProgress,async ctx=>{
         let {id}=ctx.params;
         let datas=ctx.datas;
+
+        //如果图片为空则不处理,避免误删图片
+        for(let name in message){
+            if(message[name].type=='file'||message[name].type=='files'){
+                if(!datas[name]){
+                    delete datas[name];
+                }
+            }
+        }
+
         let keys=[],values=[];
         for(let name in datas){
             keys.push(name);
