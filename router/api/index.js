@@ -14,18 +14,21 @@ router.use(async (ctx,next)=>{
     try{
         await next();
         if(ctx.body!==undefined){
+            ctx.status=200;
             ctx.body={
                 ok:true,
                 data:ctx.body
             }
         }else{
+            ctx.status=404;
             ctx.body={
-                ok:true,
+                ok:false,
                 msg:"data not found"
             }
         }
     }catch(e){
         console.log(e);
+        ctx.status=500;
         ctx.body={
             ok:false,
             msg:"server error"
@@ -75,6 +78,12 @@ router.get("/carList/:page",async ctx=>{
 router.get("/carpage",async ctx=>{
     let rows=await ctx.db.query(`SELECT count(*) AS c FROM ${config.db_table_banner}`);
     ctx.body=Math.ceil(rows[0].c/pageSize);
+});
+
+//获取车辆详情 GET /api/car/:id
+router.get("/car/:id",async ctx=>{
+    let rows=await ctx.db.query(`SELECT * FROM ${config.db_table_car} WHERE ID=?`,[ctx.params.id]);
+    ctx.body=rows[0];
 });
 
 module.exports=router.routes();
