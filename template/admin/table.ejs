@@ -231,7 +231,7 @@
 
     // 点击修改按钮
     function modify(current_data){
-      current_data=JSON.parse(current_data);
+      current_data=JSON.parse(current_data.replace(/\s+/g,""));
       let oBtnCancel=document.getElementById('btn_cancel2');
       let oBtnClose=document.getElementById('btn_close2');
       let oShadow=document.getElementById('shadow2');
@@ -261,10 +261,10 @@
               let row=document.createElement("div");
               row.className="row";
               row.innerHTML=`<div class="col-xs-4">
-                  <input type="text" class="form-control" name="${name}_key" value=${key}>
+                  <input type="text" class="form-control" name="${name}_key" value=${key||""}>
                 </div>
                 <div class="col-xs-8">
-                  <input type="text" class="form-control" name="${name}_value" value=${value}>
+                  <input type="text" class="form-control" name="${name}_value" value=${value||""}>
                 </div>`;
               parent.appendChild(row);
             });
