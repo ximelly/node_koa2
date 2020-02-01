@@ -3,6 +3,36 @@ const config = require("../../config");
 
 let router = new Router();
 
+const pageSize=10;
+
+//中间件，将数据处理成
+// {
+//     ok:true/false,
+//     data:data
+// }
+router.use(async (ctx,next)=>{
+    try{
+        await next();
+        if(ctx.body!==undefined){
+            ctx.body={
+                ok:true,
+                data:ctx.body
+            }
+        }else{
+            ctx.body={
+                ok:true,
+                msg:"data not found"
+            }
+        }
+    }catch(e){
+        console.log(e);
+        ctx.body={
+            ok:false,
+            msg:"server error"
+        }
+    }
+});
+
 //获取banner GET /api/banner
 router.get("/banner",async ctx=>{
     let datas=await ctx.db.query(`SELECT title,sub_title,image FROM ${config.db_table_banner} ORDER BY ID DESC `);
@@ -12,7 +42,6 @@ router.get("/banner",async ctx=>{
 //获取车辆列表 GET /api/carList/:page
 router.get("/carList/:page",async ctx=>{
     let {page}=ctx.params;
-    let pageSize=10;
     let datas=await ctx.db.query(`SELECT title,price,features,description,images FROM ${config.db_table_car} ORDER BY ID DESC LIMIT ?,?`,[(page-1)*pageSize,pageSize]);
     
     //数据处理
@@ -42,6 +71,10 @@ router.get("/carList/:page",async ctx=>{
     ctx.body=datas;
 });
 
-
+//获取车辆列表总页数 GET /api/carpage
+router.get("/carpage",async ctx=>{
+    let rows=await ctx.db.query(`SELECT count(*) AS c FROM ${config.db_table_banner}`);
+    ctx.body=Math.ceil(rows[0].c/pageSize);
+});
 
 module.exports=router.routes();
