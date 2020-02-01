@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 const config = require("../../config");
-
+const {post} = require("../../libs/body");
 let router = new Router();
 
 const pageSize=10;
@@ -36,18 +36,8 @@ router.use(async (ctx,next)=>{
     }
 });
 
-//获取banner GET /api/banner
-router.get("/banner",async ctx=>{
-    let datas=await ctx.db.query(`SELECT title,sub_title,image FROM ${config.db_table_banner} ORDER BY ID DESC `);
-    ctx.body=datas;
-});
-
-//获取车辆列表 GET /api/carList/:page
-router.get("/carList/:page",async ctx=>{
-    let {page}=ctx.params;
-    let datas=await ctx.db.query(`SELECT title,price,features,description,images FROM ${config.db_table_car} ORDER BY ID DESC LIMIT ?,?`,[(page-1)*pageSize,pageSize]);
-    
-    //数据处理
+//数据处理
+function preprocess(datas){
     datas.forEach(data => {
         //features处理  只保留以下信息
         //上牌时间、表显里程、本车排量、变速箱、车辆性质
@@ -71,7 +61,20 @@ router.get("/carList/:page",async ctx=>{
         data.image=data.images?data.images.split(",")[0]:"";
         delete data.images;
     });
+    return datas;
+}
+
+//获取banner GET /api/banner
+router.get("/banner",async ctx=>{
+    let datas=await ctx.db.query(`SELECT title,sub_title,image FROM ${config.db_table_banner} ORDER BY ID DESC `);
     ctx.body=datas;
+});
+
+//获取车辆列表 GET /api/carList/:page
+router.get("/carList/:page",async ctx=>{
+    let {page}=ctx.params;
+    let datas=await ctx.db.query(`SELECT ID,title,price,features,description,images FROM ${config.db_table_car} ORDER BY ID DESC LIMIT ?,?`,[(page-1)*pageSize,pageSize]);
+    ctx.body=preprocess(datas);
 });
 
 //获取车辆列表总页数 GET /api/carpage
@@ -84,6 +87,25 @@ router.get("/carpage",async ctx=>{
 router.get("/car/:id",async ctx=>{
     let rows=await ctx.db.query(`SELECT * FROM ${config.db_table_car} WHERE ID=?`,[ctx.params.id]);
     ctx.body=rows[0];
+});
+
+//获取精选好车 GET /api/choosecar
+router.get("/choosecar",async ctx=>{
+    let datas=await ctx.db.query(`SELECT ID,title,price,features,description,images FROM ${config.db_table_car} ORDER BY price DESC LIMIT 6`);
+    ctx.body=preprocess(datas);
+});
+
+//获取最新好车 GET /api/latestcar
+router.get("/latestcar",async ctx=>{
+    let datas=await ctx.db.query(`SELECT ID,title,price,features,description,images FROM ${config.db_table_car} ORDER BY ID DESC LIMIT 3`);
+    ctx.body=preprocess(datas);
+});
+
+//发送留言 POST /api/msg
+router.post("/msg",post(),async ctx=>{
+    let {name,email,title,content}=ctx.require.fields;
+    await ctx.db.query(`INSERT INTO ${config.db_msg} (name,email,title,content) VALUES (?,?,?,?)`,[name,email,title,content]);
+    ctx.body="OK";
 });
 
 module.exports=router.routes();

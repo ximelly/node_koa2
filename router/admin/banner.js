@@ -110,7 +110,7 @@ module.exports=(router,name,message,pageSize=5)=>{
             let allFiles=[];
             for(let name in message){
                 if(message[name].type=='file'||message[name].type=='files'){
-                    allFiles=allFiles.concat(data[name].split(",")||[]);
+                    allFiles=allFiles.concat(data[name]&&data[name].split(",")||[]);
                 }
             }
             await ctx.db.query(`DELETE FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);

@@ -15,6 +15,7 @@ module.exports={
     db_admin:"admin_table",
     db_table_car:"car_table",
     db_table_banner:"banner_table",
+    db_msg:"msg_table",
 
     //redis
     redis_host:"localhost",
