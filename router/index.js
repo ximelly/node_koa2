@@ -7,6 +7,7 @@ let router = new Router();
 
 router.use("",require("./web"));
 router.use("/admin",require("./admin"));
+router.use("/api",require("./api"));
 static(router);
 
 //一下两个router用于测试post请求
