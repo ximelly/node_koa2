@@ -3,7 +3,7 @@ const Router = require("koa-router");
 const body=require("../libs/body");
 const static = require("./static");
 const path = require("path");
-const fs = require("promise-fs");
+const send = require("koa-send");
 const {uploadDir} = require("../config");
 
 let router = new Router();
@@ -13,7 +13,11 @@ router.use("/admin",require("./admin"));
 router.use("/api",require("./api"));
 router.use("/upload/:img",async ctx=>{
     let {img}=ctx.params;
-    ctx.body=fs.createReadStream(path.resolve(uploadDir,img));
+    await send(ctx,img,{
+        maxAge:60*86400*1000,
+        immutable:true,//永远不会变，直接使用缓存
+        root:uploadDir
+    });
 });
 static(router);
 
