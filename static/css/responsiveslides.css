@@ -15,11 +15,11 @@
   width: 100%;
   left: 0;
   top: 0;
+  display:block;
   }
 
 .rslides li:first-child {
   position: relative;
-  display: block;
   float: left;
   }
 
