@@ -4,9 +4,10 @@ let router = new Router();
 
 
 router.get("/",
-    contentStatic("page:"),//内容静态化
-    ctx=>{
+    //contentStatic("page:"),//内容静态化
+    async ctx=>{
         ctx.body="page index";
+        await ctx.render('web/index');
     }
 );
 
