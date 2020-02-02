@@ -1,0 +1,9 @@
+<ul class="nav nav-tabs">
+    <%tabs.forEach((tab,index)=>{%>
+        <%if(index==curent_tab){%>
+            <li class="active"><a href="<%=tab.href%>"><%=tab.title%></a></li>
+        <%}else{%>
+            <li><a href="<%=tab.href%>"><%=tab.title%></a></li>
+        <%}%>
+    <%})%>
+</ul>

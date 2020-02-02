@@ -3,8 +3,7 @@ const {upload} = require("../../libs/body");
 const path = require("path");
 const fs = require("promise-fs");
 
-module.exports=(router,name,message,pageSize=5)=>{
-
+module.exports=(router,name,message,tabs,pageSize=5)=>{
     async function preProgress(ctx,next){
         //获取到用户提交内容并进行初步处理
         let datas=ctx.request.fields;
@@ -96,7 +95,14 @@ module.exports=(router,name,message,pageSize=5)=>{
         }
 
         let datas=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} ORDER BY ID DESC LIMIT ?,?`,[(page-1)*pageSize,pageSize]);
-        await ctx.render(`admin/table`,{name:`${name}`,datas,message,page_count,page});
+        let curent_tab=-1;
+        tabs.forEach((tab,index)=>{
+            if(tab.name==name){
+                curent_tab=index;
+            }
+        })
+        await ctx.render(`admin/table`,{name:`${name}`,datas,message,page_count,page,tabs,curent_tab});
+        
     });
 
     //删除数据
