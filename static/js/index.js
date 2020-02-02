@@ -112,4 +112,26 @@
       }
     }
   }
+
+  //最新上架
+  {
+    let datas=await $.ajax({
+      url:'/api/latestcar',
+      dataType:'json'
+    })
+    let {ok,data}=datas;
+    console.log(data);
+    if(ok){
+      for(let i=0,len=data.length;i<len;i++){
+        let item=data[i];
+        $(`<div class="post">
+        <a href="#"><img src="/upload/${item.image}"/></a>
+        <div class="wrapper">
+          <h5><a href="#">${item.title.substring(0,10)}</a></h5>
+           <span>${(item.price/1000).toFixed(1)}万</span>
+        </div>
+      </div>`).appendTo('#lastestcar');
+      }
+    }
+  }
 })()
