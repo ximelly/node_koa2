@@ -73,42 +73,56 @@
 
   //列表
   {
-    let datas=await $.ajax({
-      url:'/api/carList/1',
-      dataType:'json'
-    })
-    let {ok,data}=datas;
-    if(ok){
-      for(let i=0,len=data.length;i<len;i++){
-        let item=data[i];
-        $(`<div class="row">
-        <div class="item">
-          <div class="col-1-3">
-            <div class="item-container">
-              <a href="single.html">
-                <div class="item-caption">
-                  <div class="item-caption-inner">
-                    <div class="item-caption-inner1">
-                      <span>${item.time} / ${item.mileage} / ${item.displace} / ${item.transmission} /  ${item.type}</span>
+    let page=1;
+    //初始化数据
+    getList(page);
+
+    //点击加载更多
+    $("#moreCar").click(()=>{
+      getList(++page);
+    });
+
+    async function getList(page){
+      let datas=await $.ajax({
+        url:`/api/carList/${page}`,
+        dataType:'json'
+      })
+      let {ok,data}=datas;
+      if(ok){
+        if(data.length<10){
+          $("#moreCar").remove();
+        }
+        for(let i=0,len=data.length;i<len;i++){
+          let item=data[i];
+          $(`<div class="row">
+          <div class="item">
+            <div class="col-1-3">
+              <div class="item-container">
+                <a href="single.html">
+                  <div class="item-caption">
+                    <div class="item-caption-inner">
+                      <div class="item-caption-inner1">
+                        <span>${item.time} / ${item.mileage} / ${item.displace} / ${item.transmission} /  ${item.type}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <img src="/upload/${item.image}" />
-              </a>
-            </div>
-          </div>
-          <div class="col-2-3">
-            <div class="wrap-col">
-              <div class="item-info">
-                <a href="single.html"><h3>${item.title}</h3></a>
-                <p>${item.mileage} ${(item.price/1000).toFixed(1)}万</p>
-                <p>${item.description}</p>
+                  <img src="/upload/${item.image}" />
+                </a>
               </div>
             </div>
+            <div class="col-2-3">
+              <div class="wrap-col">
+                <div class="item-info">
+                  <a href="single.html"><h3>${item.title}</h3></a>
+                  <p>${item.mileage} ${(item.price/1000).toFixed(1)}万</p>
+                  <p>${item.description}</p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
           </div>
-          <div class="clear"></div>
-        </div>
-      </div>`).insertBefore('#moreCar');
+        </div>`).insertBefore('#moreCar');
+        }
       }
     }
   }
