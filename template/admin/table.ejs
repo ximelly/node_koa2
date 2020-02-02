@@ -13,6 +13,7 @@
     
 	  <%- include('components/tab.ejs') %>
     <button type="button" id="btn_add" class="btn btn-default">添加</button>
+    <button type="button" id="btn_del" class="btn btn-danger">删除</button>
 
     <!-- 添加 -->
     <div class="dialog-shadow" id="shadow"></div>
@@ -135,7 +136,7 @@
       <thead>
         <tr>
           <th>
-            <input type="checkbox" name="" value="">
+            <input type="checkbox" id="checkAll" value="">
           </th>
           <th>ID</th>
           <% for(let name in message){%>
@@ -150,7 +151,7 @@
         <%datas.forEach(data=>{%>
           <tr>
             <td>
-              <input type="checkbox" name="" value="">
+              <input type="checkbox" name="check" value="<%=data.ID%>">
             </td>
             <td><%=data.ID%></td>
             <% for(let name in message){%>
@@ -201,21 +202,33 @@
 
     <script type="text/javascript">
     let oBtn=document.getElementById('btn_add');
+    let oBtnDel=document.getElementById('btn_del');
     let oBtnCancel=document.getElementById('btn_cancel');
     let oBtnClose=document.getElementById('btn_close');
     let oShadow=document.getElementById('shadow');
     let oDialog=document.getElementById('dialog');
-
+    let checkAll=document.getElementById('checkAll');
+    
     oBtn.onclick=function (){
       oShadow.style.display='block';
       oDialog.style.display='block';
     };
-
+    oBtnDel.onclick=function (){
+      let all_check=document.getElementsByName("check");
+      let id=Array.from(all_check).filter(item=>item.checked).map(item=>item.value).join(",");
+      if(confirm(`确认删除${id.split(",").length}条数据吗？`)){
+        window.location.href=`/admin/del<%=name%>/${id}`;
+      }
+    };
     oBtnCancel.onclick=oBtnClose.onclick=function (){
       oShadow.style.display='none';
       oDialog.style.display='none';
     };
-
+    checkAll.onclick=function (){
+      let check=this.checked;
+      let all_check=document.getElementsByName("check");
+      Array.from(all_check).forEach(item=>item.checked=check);
+    };
     function addField(id, name){
       let oParent=document.getElementById(id);
       let row=document.createElement('div');

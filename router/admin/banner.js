@@ -107,31 +107,34 @@ module.exports=(router,name,message,tabs,pageSize=5)=>{
 
     //删除数据
     router.get(`/del${name}/:id`,async ctx=>{
-        let {id}=ctx.params;
-        //查询数据库中是否有该条数据
-        let row=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
-        if(row.length>0){
-            let data=row[0];
-            //获取所有文件数据
-            let allFiles=[];
-            for(let name in message){
-                if(message[name].type=='file'||message[name].type=='files'){
-                    allFiles=allFiles.concat(data[name]&&data[name].split(",")||[]);
+        let ids=ctx.params.id.split(",");
+        for(let i=0,len=ids.length;i<len;i++){
+            let id=ids[i];
+            //查询数据库中是否有该条数据
+            let row=await ctx.db.query(`SELECT * FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
+            if(row.length>0){
+                let data=row[0];
+                //获取所有文件数据
+                let allFiles=[];
+                for(let name in message){
+                    if(message[name].type=='file'||message[name].type=='files'){
+                        allFiles=allFiles.concat(data[name]&&data[name].split(",")||[]);
+                    }
                 }
-            }
-            await ctx.db.query(`DELETE FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
+                await ctx.db.query(`DELETE FROM ${config[`db_table_${name}`]} WHERE ID=?`,[id]);
 
-            //删除所有文件
-            for(let i=0,len=allFiles.length;i<len;i++){
-                try{
-                    await fs.unlink(path.resolve(config.uploadDir,allFiles[i]));
-                }catch(e){
-                    console.log(e);
+                //删除所有文件
+                for(let i=0,len=allFiles.length;i<len;i++){
+                    try{
+                        await fs.unlink(path.resolve(config.uploadDir,allFiles[i]));
+                    }catch(e){
+                        console.log(e);
+                    }
                 }
-            }
 
-        }else{
-            ctx.body="数据找不到"
+            }else{
+                ctx.body="数据找不到"
+            }
         }
         ctx.redirect(`/admin/${name}`);
     });
