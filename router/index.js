@@ -15,6 +15,9 @@ router.use("/single/:id",async ctx=>{
     let {id}=ctx.params;
     await ctx.render('web/single',{id});
 });
+router.use("/contact",async ctx=>{
+    await ctx.render('web/contact');
+});
 router.use("/upload/:img",async ctx=>{
     let {img}=ctx.params;
     await send(ctx,img,{

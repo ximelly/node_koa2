@@ -1,6 +1,6 @@
 const Router = require("koa-router");
 const config = require("../../config");
-const {post} = require("../../libs/body");
+const {upload} = require("../../libs/body");
 let router = new Router();
 
 const pageSize=10;
@@ -102,8 +102,8 @@ router.get("/latestcar",async ctx=>{
 });
 
 //发送留言 POST /api/msg
-router.post("/msg",post(),async ctx=>{
-    let {name,email,title,content}=ctx.require.fields;
+router.post("/msg",...upload(),async ctx=>{
+    let {name,email,title,content}=ctx.request.fields;
     await ctx.db.query(`INSERT INTO ${config.db_msg} (name,email,title,content) VALUES (?,?,?,?)`,[name,email,title,content]);
     ctx.body="OK";
 });

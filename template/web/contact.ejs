@@ -25,7 +25,7 @@
 										<h5>留言建议</h5>
 									</div>
 									<div id="contact_form">
-										<form name="form1" class="ff">
+										<form class="ff" id="form1">
 											<label class="row">
 												<div class="col-1-2">
 													<div class="wrap-col">
@@ -40,15 +40,15 @@
 											</label>
 											<label class="row">
 												<div class="wrap-col">
-													<input type="text" name="subject" placeholder="留言标题" required="required" />
+													<input type="text" name="title" placeholder="留言标题" required="required" />
 												</div>
 											</label>
 											<label class="row">
 												<div class="wrap-col">
-													<textarea name="msg" class="form-control" rows="4" cols="25" required placeholder="留言内容"></textarea>
+													<textarea name="content" class="form-control" rows="4" cols="25" required placeholder="留言内容"></textarea>
 												</div>
 											</label>
-											<center><input class="sendButton" type="submit" name="Submit" value="提交"></center>
+											<center><input class="sendButton" type="button" name="Submit" value="提交"></center>
 										</form>
 									</div>
 								</div>
@@ -77,6 +77,6 @@
 </section>
 
 <%- include('components/footer.ejs') %>
-
+<script src="/js/contact.js" charset="utf-8"></script>
 </div>
 </body></html>
