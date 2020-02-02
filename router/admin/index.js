@@ -1,5 +1,6 @@
 const Router = require("koa-router");
 const reg = require("../../libs/reg");
+const config = require("../../config");
 
 let router = new Router();
 router.use(async(ctx,next)=>{
@@ -41,6 +42,10 @@ require("./banner")(
 
 router.get("/",ctx=>{
     ctx.body="登录成功";
+});
+router.get("/msg",async ctx=>{
+    let datas=await ctx.db.query(`SELECT * FROM ${config.db_msg} ORDER BY ID DESC`);
+    await ctx.render(`admin/msg`,{datas});
 });
 
 module.exports=router.routes();
