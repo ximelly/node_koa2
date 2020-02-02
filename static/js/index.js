@@ -50,7 +50,7 @@
           arr.forEach((item) => {
             $(`<div class="item t-center">
             <div class="item-container">
-              <a href="single.html">
+              <a href="single/${item.ID}">
                 <div class="item-caption">
                   <div class="item-caption-inner">
                     <div class="item-caption-inner1">
@@ -62,7 +62,7 @@
               </a>
             </div>
             <div class="item-info">
-              <a href="single.html"><h3>${item.title}</h3></a>
+              <a href="single/${item.ID}"><h3>${item.title}</h3></a>
               <p>${item.mileage} ${(item.price/1000).toFixed(1)}万</p>
             </div>
           </div>`).appendTo('#choosecar .wrap-col:last');
@@ -98,7 +98,7 @@
           <div class="item">
             <div class="col-1-3">
               <div class="item-container">
-                <a href="single.html">
+                <a href="single/${item.ID}">
                   <div class="item-caption">
                     <div class="item-caption-inner">
                       <div class="item-caption-inner1">
@@ -113,7 +113,7 @@
             <div class="col-2-3">
               <div class="wrap-col">
                 <div class="item-info">
-                  <a href="single.html"><h3>${item.title}</h3></a>
+                  <a href="single/${item.ID}"><h3>${item.title}</h3></a>
                   <p>${item.mileage} ${(item.price/1000).toFixed(1)}万</p>
                   <p>${item.description}</p>
                 </div>
@@ -134,14 +134,13 @@
       dataType:'json'
     })
     let {ok,data}=datas;
-    console.log(data);
     if(ok){
       for(let i=0,len=data.length;i<len;i++){
         let item=data[i];
         $(`<div class="post">
-        <a href="#"><img src="/upload/${item.image}"/></a>
+        <a href="single/${item.ID}"><img src="/upload/${item.image}"/></a>
         <div class="wrapper">
-          <h5><a href="#">${item.title.substring(0,10)}</a></h5>
+          <h5><a href="single/${item.ID}">${item.title.substring(0,10)}</a></h5>
            <span>${(item.price/1000).toFixed(1)}万</span>
         </div>
       </div>`).appendTo('#lastestcar');

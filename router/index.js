@@ -11,6 +11,10 @@ let router = new Router();
 router.use("",require("./web"));
 router.use("/admin",require("./admin"));
 router.use("/api",require("./api"));
+router.use("/single/:id",async ctx=>{
+    let {id}=ctx.params;
+    await ctx.render('web/single',{id});
+});
 router.use("/upload/:img",async ctx=>{
     let {img}=ctx.params;
     await send(ctx,img,{
