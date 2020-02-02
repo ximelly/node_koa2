@@ -86,5 +86,5 @@ let server = new Koa();
     })
 
     server.listen(config.port);
-    //opn(`http://localhost:${config.port}`)
+    opn(`http://localhost:${config.port}`)
 })()
